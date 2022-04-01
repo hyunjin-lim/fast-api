@@ -4,6 +4,7 @@
 
     Python3.9
     Fast-Api
+    mysql
 
 2.SETUP
 

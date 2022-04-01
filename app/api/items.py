@@ -22,13 +22,13 @@ def create_item(item: ItemCreate, db: Session = Depends(get_db)):
 def get_item(item_id: int, db: Session = Depends(get_db)):
     db_user = crud_items.get(db, id=item_id)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Item not found")
     return db_user
 
 
 @router.delete("/{item_id}")
-def remove_item(user_id: int, db: Session = Depends(get_db)):
-    db_user = crud_items.remove(db, id=user_id)
+def remove_item(item_id: int, db: Session = Depends(get_db)):
+    db_user = crud_items.remove(db, id=item_id)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Item not found")
     return {'msg': 'success'}

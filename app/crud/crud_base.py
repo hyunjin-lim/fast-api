@@ -21,9 +21,7 @@ class CrudBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.model = model
 
     def query(self, db: Session):
-        return db.query(self.model).filter(
-            self.model.deleted_at.is_(None)
-        )
+        return db.query(self.model).filter(self.model.deleted_at.is_(None))
 
     def get(self, db: Session, id: Any) -> Optional[ModelType]:
         return self.query(db).filter(self.model.id == id).first()
@@ -62,7 +60,7 @@ class CrudBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db_obj
 
     def remove(self, db: Session, *, id: int) -> ModelType:
-        obj = self.query(db).get(id)
+        obj = self.get(db,id)
         obj.deleted_at = datetime.datetime.now()
         db.add(obj)
         db.commit()

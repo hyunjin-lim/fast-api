@@ -1,14 +1,9 @@
-from fastapi import FastAPI, Response, Request
+from fastapi import FastAPI, Response, Request, Depends
 from app.core.routers import api_router
 from app.core.settings import settings
 from starlette.middleware.cors import CORSMiddleware
 from loguru import logger
-import random
-import uuid
-import contextvars
-from fastapi.responses import JSONResponse
-
-request_id_contextvar = contextvars.ContextVar("request_id", default=None)
+from fastapi.security import OAuth2PasswordBearer
 
 app = FastAPI(**settings.fastapi_kwargs)
 
@@ -38,8 +33,14 @@ async def log_request(request, call_next):
     )
 
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+@app.get("/test")
+def read_token(token: str = Depends(oauth2_scheme)):
+    return {"token": token}
+
+
 app.include_router(api_router, prefix=settings.api_prefix)
-
-
 
 

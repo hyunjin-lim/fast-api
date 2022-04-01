@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException
-from app.schemas.users import UserResponse, UserCreate
+from fastapi import APIRouter, Depends, HTTPException, status
+from app.schemas.users import UserResponse, UserCreate, UserUpdate
 from app.schemas.items import ItemResponse, ItemCreate
 from app.crud.users import crud_users
 from app.crud.items import crud_items
@@ -15,7 +15,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return users
 
 
-@router.post("", response_model=UserResponse)
+@router.post("", response_model=UserResponse, status_code=status.HTTP_200_OK)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = crud_users.get_user_by_email(db, email=user.email)
     if db_user:
@@ -31,8 +31,16 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
+@router.put("/{user_id}", response_model=UserResponse)
+def read_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
+    db_user = crud_users.get(db, id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return crud_users.update(db=db, db_obj=db_user, obj_in=user)
+
+
 @router.delete("/{user_id}")
-def read_user(user_id: int, db: Session = Depends(get_db)):
+def remove_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crud_users.remove(db, id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
