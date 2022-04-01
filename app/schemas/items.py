@@ -13,6 +13,10 @@ class ItemCreate(ItemBase):
     pass
 
 
+class ItemUpdate(ItemBase):
+    pass
+
+
 class ItemResponse(ItemBase):
     id: int
     owner_id: int

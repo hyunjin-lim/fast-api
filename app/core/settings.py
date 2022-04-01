@@ -1,7 +1,5 @@
-import secrets
 import logging
 from typing import Any, Dict, List, Optional, Union, Tuple
-
 from pydantic import AnyHttpUrl, BaseSettings, SecretStr
 
 
@@ -12,7 +10,7 @@ class Settings(BaseSettings):
     openapi_prefix: str = ''
     openapi_url: str = '/openapi.json'
     redoc_url: str = '/redoc'
-    version: str = '0.0.0'
+    version: str = '1.0.0'
 
     mysql_host: str
     mysql_port: int
@@ -22,6 +20,7 @@ class Settings(BaseSettings):
 
     # 60 minutes * 24 hours * 8 days = 8 days
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+
     allowed_hosts: list[str] = ["*"]
 
     logging_level: int = logging.INFO

@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Body, Depends, HTTPException
-from app.models.users import User
-from app.schemas.users import UserResponse, UserBase, UserCreate
+from fastapi import APIRouter, Depends, HTTPException
+from app.schemas.users import UserResponse, UserCreate
 from app.schemas.items import ItemResponse, ItemCreate
 from app.crud.users import crud_users
-from app.crud.items import create_user_item
+from app.crud.items import crud_items
 from .dependencies import get_db
 from sqlalchemy.orm import Session
 
@@ -44,4 +43,4 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 def create_item_for_user(
     user_id: int, item: ItemCreate, db: Session = Depends(get_db)
 ):
-    return create_user_item(db=db, item=item, user_id=user_id)
+    return crud_items.create_user_item(db=db, item=item, user_id=user_id)
