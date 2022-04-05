@@ -6,9 +6,9 @@ from app.crud.users import crud_users
 from jose import JWTError, jwt
 from app.core.settings import settings
 from app.core.security import ALGORITHM
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/token")
 
 
 def get_db():
