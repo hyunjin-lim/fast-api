@@ -19,16 +19,14 @@ class Settings(BaseSettings):
     mysql_password: str
 
     # 60 minutes * 24 hours * 8 days = 8 days
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 1
 
     allowed_hosts: list[str] = ["*"]
 
     logging_level: int = logging.INFO
     loggers: Tuple[str, str] = ('uvicorn.asgi', 'uvicorn.access')
-
-    secret_key: SecretStr
+    secret_key: str
     api_prefix: str = "/api/v1"
-
     jwt_token_prefix: str = 'Token'
 
     class Config:
