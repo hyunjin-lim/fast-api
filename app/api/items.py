@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from app.schemas.items import ItemResponse, ItemCreate
 from app.crud.items import crud_items
 from .dependencies import get_db
 from sqlalchemy.orm import Session
+from app.core.utils import upload_file_obj
 
 router = APIRouter()
 
@@ -32,3 +33,15 @@ def remove_item(item_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="Item not found")
     return {'msg': 'success'}
+
+
+@router.post("/uploadfile")
+async def create_upload_file(file: UploadFile = File(...)):
+    path = 'gms'
+    upload_path = upload_file_obj(file=file, path=path)
+    return upload_path
+
+    
+
+
+

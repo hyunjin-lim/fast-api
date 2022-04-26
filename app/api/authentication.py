@@ -1,3 +1,4 @@
+from typing import Optional
 from app.schemas.users import UserResponse
 from .dependencies import get_db, get_current_active_user
 from sqlalchemy.orm import Session

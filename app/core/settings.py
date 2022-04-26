@@ -4,7 +4,7 @@ from pydantic import AnyHttpUrl, BaseSettings, SecretStr
 
 
 class Settings(BaseSettings):
-    title: str = "ITEM MASTER"
+    title: str = "FAST API SETTING"
     debug: bool
     docs_url: str = '/docs'
     openapi_prefix: str = ''
@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     mysql_db_name: str
     mysql_user: str
     mysql_password: str
+
+    AWS_ACCESS_KEY: str = ''
+    AWS_SECRET_KEY: str = ''
+    S3_BUCKET_NAME: str = ''
 
     # 60 minutes * 24 hours * 8 days = 8 days
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 1

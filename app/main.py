@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response, Request, Depends
+from fastapi import FastAPI, Response, Request, Depends, Query, Body
 from app.core.routers import api_router
 from app.core.settings import settings
 from starlette.middleware.cors import CORSMiddleware
@@ -41,6 +41,31 @@ def read_token(token: str = Depends(oauth2_scheme)):
     return {"token": token}
 
 
+from typing import Optional
+from pydantic import BaseModel
+
+
+class Item(BaseModel):
+    name: str
+    description: Optional[str] = None
+    price: float
+    tax: Optional[float] = None
+
+
+class User(BaseModel):
+    username: str
+    full_name: Optional[str] = None
+
+
+@app.post("/test/{item_id}")
+async def read_item(item_id: str,
+                    user: User,
+                    q: str = Query(None, min_length=3),
+                    item: Item = Body(..., embed=True)):
+    results = {"items": [{"item_id": item_id}, {"user": user}, {"item": item}]}
+    if q:
+        results.update({"q": q})
+    return results
+
+
 app.include_router(api_router, prefix=settings.api_prefix)
-
-
