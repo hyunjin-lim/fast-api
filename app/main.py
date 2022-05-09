@@ -1,9 +1,8 @@
-from fastapi import FastAPI, Response, Request, Depends, Query, Body
+from fastapi import FastAPI, Response, Request, Depends, Query, Body, Path, status, HTTPException
 from app.core.routers import api_router
 from app.core.settings import settings
 from starlette.middleware.cors import CORSMiddleware
 from loguru import logger
-from fastapi.security import OAuth2PasswordBearer
 
 app = FastAPI(**settings.fastapi_kwargs)
 
@@ -31,41 +30,6 @@ async def log_request(request, call_next):
         headers=dict(response.headers),
         media_type=response.media_type
     )
-
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-@app.get("/test")
-def read_token(token: str = Depends(oauth2_scheme)):
-    return {"token": token}
-
-
-from typing import Optional
-from pydantic import BaseModel
-
-
-class Item(BaseModel):
-    name: str
-    description: Optional[str] = None
-    price: float
-    tax: Optional[float] = None
-
-
-class User(BaseModel):
-    username: str
-    full_name: Optional[str] = None
-
-
-@app.post("/test/{item_id}")
-async def read_item(item_id: str,
-                    user: User,
-                    q: str = Query(None, min_length=3),
-                    item: Item = Body(..., embed=True)):
-    results = {"items": [{"item_id": item_id}, {"user": user}, {"item": item}]}
-    if q:
-        results.update({"q": q})
-    return results
 
 
 app.include_router(api_router, prefix=settings.api_prefix)

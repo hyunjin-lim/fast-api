@@ -15,7 +15,10 @@ def get_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=ItemResponse)
-def create_item(item: ItemCreate, db: Session = Depends(get_db)):
+def create_item(
+        item: ItemCreate,
+        db: Session = Depends(get_db)
+):
     return crud_items.create_user_item(db=db, item=item, user_id=1)
 
 
@@ -40,8 +43,3 @@ async def create_upload_file(file: UploadFile = File(...)):
     path = 'gms'
     upload_path = upload_file_obj(file=file, path=path)
     return upload_path
-
-    
-
-
-

@@ -11,7 +11,10 @@ router = APIRouter()
 
 
 @router.post("/token")
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+async def login_for_access_token(
+        form_data: OAuth2PasswordRequestForm = Depends(),
+        db: Session = Depends(get_db)
+):
     user = crud_users.authenticate_user(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(
@@ -24,7 +27,10 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
 
 @router.post("/login")
-async def login_for_access_token(form_data: dict[str, str], db: Session = Depends(get_db)):
+async def login_for_access_token(
+        form_data: dict[str, str],
+        db: Session = Depends(get_db)
+):
     user = crud_users.authenticate_user(form_data['username'], form_data['password'], db)
     if not user:
         raise HTTPException(
@@ -37,5 +43,5 @@ async def login_for_access_token(form_data: dict[str, str], db: Session = Depend
 
 
 @router.get("/auth/me", response_model=UserResponse)
-async def read_users_me(current_user: UserResponse = Depends(get_current_active_user)):
+async def auth_me(current_user: UserResponse = Depends(get_current_active_user)):
     return current_user
