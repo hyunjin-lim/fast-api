@@ -24,7 +24,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = crud_users.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return crud_users.crud_create_user(db=db, user=user)
+    return crud_users.create_user(db=db, user=user)
 
 
 @router.get("/{user_id}", response_model=UserResponse)

@@ -10,7 +10,7 @@ class CrudUser(CrudBase[User, UserCreate, UserUpdate]):
     def get_user_by_email(self, db: Session, email: str):
         return self.query(db).filter(User.email == email).first()
 
-    def crud_create_user(self, db: Session, user: UserCreate):
+    def create_user(self, db: Session, user: UserCreate):
         db_user = User(email=user.email, hashed_password=get_password_hash(user.hashed_password))
         db.add(db_user)
         db.commit()
