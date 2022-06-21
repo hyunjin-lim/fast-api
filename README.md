@@ -37,5 +37,5 @@
     # Make DB ddl to sqlalchemy models
     sqlacodegen "drive://username:password@host:port/dbname" > models.py
 
-    # example
+    # Example
     sqlacodegen "mysql+pymysql://root:@localhost:3306/ktown4u-api" > models.py
