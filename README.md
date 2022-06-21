@@ -1,6 +1,6 @@
 # fast-api
 
-1.환경
+1.spec
 
     Python3.9
     Fast-Api
